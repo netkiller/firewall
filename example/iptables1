@@ -1,0 +1,66 @@
+#! /bin/sh
+# /etc/iptables.bak
+ 
+# Let's save typing & confusion with variables
+IPTABLES=/sbin/iptables
+ 
+# Flush active rules and custom tables
+$IPTABLES --flush
+$IPTABLES --delete-chain
+ 
+# set the defaults so that by-default incoming packets are dropped, unless explicitly allowed;
+# for a desktop workstation, we'll let lots of (unpredictable) outgoing packets go freely.
+$IPTABLES -P INPUT DROP
+$IPTABLES -P FORWARD DROP
+$IPTABLES -P OUTPUT ACCEPT
+ 
+# INBOUND POLICY
+# ==============
+# of course, accepting loopback is a good idea
+$IPTABLES -A INPUT -i lo -j ACCEPT
+ 
+# we will permit ping, but rate-limit type 8 to prevent DoS-attack
+$IPTABLES -A INPUT -p icmp --icmp-type 0 -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type 3 -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type 11 -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type 8 -m limit --limit 1/second -j ACCEPT
+ 
+#   (Applies to packets entering our network interface from the network,
+#   and addressed to this host.)
+ 
+$IPTABLES -A INPUT -m state --state INVALID -j DROP
+$IPTABLES -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+ 
+# ftp incoming
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 20 -j ACCEPT
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 21 -j ACCEPT
+ 
+# ssh incoming, including non-standard port (if needed)
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
+#$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 222 -j ACCEPT
+ 
+# web serving, let's allow it!
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 80 -j ACCEPT
+ 
+# secure web serving, let's allow it!
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 443 -j ACCEPT
+ 
+# amanda tape-backups; we reach out and tape things from this machine
+$IPTABLES -A INPUT -p udp -m state --state NEW -m udp --dport 10080 -j ACCEPT
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 10082 -j ACCEPT
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 10083 -j ACCEPT
+ 
+# nagios (5666); monitor time (123), allow snmp (161)
+$IPTABLES -A INPUT -p tcp -m state --state NEW --dport 5666 -j ACCEPT
+$IPTABLES -A INPUT -p udp -m udp --dport 123 -j ACCEPT
+$IPTABLES -A INPUT -p udp -m udp --dport 161 -j ACCEPT
+ 
+ 
+# OUTBOUND POLICY
+# ===============
+# of course, accepting loopback is a good idea
+$IPTABLES -A OUTPUT -o lo -j ACCEPT
+ 
+#   (Applies to packets sent to the network interface from local processes)
+ 
+$IPTABLES -A OUTPUT -j ACCEPT
