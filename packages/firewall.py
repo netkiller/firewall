@@ -73,6 +73,7 @@ class Firewall(Service, Address):
 		pass
 	def flush(self):
 		self.accesslist.append('iptables -F')
+		self.accesslist.append('iptables -X')
 		self.accesslist.append('iptables -F -t nat')
 		self.accesslist.append('iptables -F -t filter')
 		self.accesslist.append('iptables -t nat -P PREROUTING ACCEPT')
@@ -247,3 +248,5 @@ class Firewall(Service, Address):
 	def list(self):
 		os.system('sudo iptables -S')
 		#os.system('sudo iptables -L --line-numbers')
+	def status(self):
+		os.system('iptables -L -vn')
