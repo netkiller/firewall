@@ -45,11 +45,12 @@ www.input().reject('--reject-with icmp-host-prohibited')
 www.forward().reject('--reject-with icmp-host-prohibited')
 
 def start():
-	www.run()
+	www.start()
 def stop():
-	www.flush()
+	www.stop()
 def restart():
-	www.run()
+	www.stop()
+	www.start()
 def show():
 	www.show()
 def status():
