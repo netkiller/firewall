@@ -34,6 +34,9 @@ class Protocol():
 	UDP		= 'UDP'
 	def __init__(self):
 		pass
+class Policy():
+	def __init__(self):
+		pass
 class Firewall(Service, Address):
 	INPUT 	= 'INPUT'
 	OUTPUT	= 'OUTPUT'
@@ -231,6 +234,7 @@ class Firewall(Service, Address):
 		self.target('DNAT',desc)
 	def snat(self,desc = None):
 		self.target('SNAT',desc)
+		
 	def show(self):
 		print('\n'.join(self.accesslist))
 	def run(self):
@@ -248,5 +252,10 @@ class Firewall(Service, Address):
 	def list(self):
 		os.system('sudo iptables -S')
 		#os.system('sudo iptables -L --line-numbers')
+	def start(self):
+		self.run();
+	def stop(self):
+		self.flush()
+		self.run();
 	def status(self):
 		os.system('iptables -L -vn')
