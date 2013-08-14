@@ -14,7 +14,7 @@ def usage():
 def main():
 
 	parser.add_option("-r", "--rule", dest="rule", help="loading firewall rule file", metavar="RULE")  
-	#parser.add_option("-c", "--clean", action='store_true', dest="clean", default=True,  help="clean")  
+	parser.add_option("-l", "--libexec", dest='rule', help="libexec path", metavar='')  
 	#parser.add_option('-v','--version',action='store_true', help='print version number')
 	#parser.add_option("-h", "--help", action="store_false", dest="verbose", default=True,  help="print help messages")  
 
@@ -25,7 +25,11 @@ def main():
 	#if options.verbose:
 	#	usage()
 	if options.rule:
-		libexec = os.path.dirname(os.getcwd())+'/libexec'
+		if options.libexec :
+			libexec = options.libexec
+		else:
+			libexec = os.path.dirname(os.getcwd())+'/libexec'
+			
 		if not libexec in sys.path:
 			sys.path.append(libexec) 
 	
