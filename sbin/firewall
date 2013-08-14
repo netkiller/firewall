@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from optparse import OptionParser
+import os,sys; 
+
+
+parser = OptionParser(usage = "usage: %prog [options] start|stop|restart")
+
+def usage():
+	parser.print_help()
+	print("\nHomepage: http://netkiller.github.io\r\nAuthor: Neo <netkiller@msn.com>\r\n")
+	sys.exit()
+def main():
+
+	parser.add_option("-r", "--rule", dest="rule", help="loading firewall rule file", metavar="RULE")  
+	#parser.add_option("-c", "--clean", action='store_true', dest="clean", default=True,  help="clean")  
+	#parser.add_option('-v','--version',action='store_true', help='print version number')
+	#parser.add_option("-h", "--help", action="store_false", dest="verbose", default=True,  help="print help messages")  
+
+	(options, args) = parser.parse_args()
+	print(options, args);	
+	if not args: 
+		usage()  
+	#if options.verbose:
+	#	usage()
+	if options.rule:
+		libexec = os.path.dirname(os.getcwd())+'/libexec'
+		if not libexec in sys.path:
+			sys.path.append(libexec) 
+	
+		if not options.rule in sys.modules:
+			fw = __import__(options.rule)
+			#fw.main()
+		else:
+			eval('import '+options.rule)
+			fw = eval('reload('+options.rule+')')
+		if 'start' in args:
+			fw.start()
+		if 'stop' in args:
+			fw.stop()
+		if 'status' in args:
+			fw.status()
+		
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print ("Crtl+C Pressed. Shutting down.")
