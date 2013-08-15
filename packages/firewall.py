@@ -253,9 +253,9 @@ class Firewall(Service, Address):
 		os.system('sudo iptables -S')
 		#os.system('sudo iptables -L --line-numbers')
 	def start(self):
-		self.run();
+		self.run()
 	def stop(self):
 		self.flush()
-		self.run();
+		self.run()
 	def status(self):
 		os.system('iptables -L -vn')

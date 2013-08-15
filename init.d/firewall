@@ -1,0 +1,69 @@
+#!/bin/bash
+##############################################
+# Author: netkiller<netkiller@msn.com>
+# Home: http://netkiller.github.io
+##############################################
+#
+# iptables	Start iptables firewall
+#
+# chkconfig: 2345 08 92
+# description:	Starts, stops and saves iptables firewall
+#
+# config: /srv/firewall/libexec
+#
+### BEGIN INIT INFO
+# Provides: iptables
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop iptables firewall
+# Description: Start, stop and save iptables firewall
+### END INIT INFO
+
+NAME=firewall
+BASEDIR='/srv/firewall'
+PROG=$BASEDIR/sbin/$(basename $0)
+LOGFILE=/var/tmp/$NAME.log
+PIDFILE=/var/tmp/$NAME.pid
+##############################################
+PYTHON3=/usr/bin/python3
+LIBEXEC=$BASEDIR/libexec
+RULE=www
+##############################################
+PROG_OPT="--libexec=${LIBEXEC} --rule=${RULE}"
+#echo $$
+#echo $BASHPID
+function start(){
+	${PROG} ${PROG_OPT} start
+}
+function stop(){
+  	${PROG} ${PROG_OPT} stop
+}
+function status(){
+	${PROG} ${PROG_OPT} status
+}
+function restart(){
+	stop
+	start
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  status)
+  	status
+	;;
+  restart)
+	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart}"
+	exit 2
+esac
+
+exit $?

@@ -13,18 +13,19 @@ def usage():
 	sys.exit()
 def main():
 
+	parser.add_option("-l", "--libexec", dest='libexec', default='libexec', help="libexec path", metavar='') 
 	parser.add_option("-r", "--rule", dest="rule", help="loading firewall rule file", metavar="RULE")  
-	parser.add_option("-l", "--libexec", dest='rule', help="libexec path", metavar='')  
 	#parser.add_option('-v','--version',action='store_true', help='print version number')
 	#parser.add_option("-h", "--help", action="store_false", dest="verbose", default=True,  help="print help messages")  
 
 	(options, args) = parser.parse_args()
-	print(options, args);	
+	#print(options, args);	
 	if not args: 
 		usage()  
 	#if options.verbose:
 	#	usage()
 	if options.rule:
+		module = options.rule
 		if options.libexec :
 			libexec = options.libexec
 		else:
@@ -34,17 +35,19 @@ def main():
 			sys.path.append(libexec) 
 	
 		if not options.rule in sys.modules:
-			fw = __import__(options.rule)
+			fw = __import__(module)
 			#fw.main()
-		else:
-			eval('import '+options.rule)
-			fw = eval('reload('+options.rule+')')
+		#else:
+		#	eval('import '+options.rule)
+		#	fw = eval('reload('+options.rule+')')
 		if 'start' in args:
 			fw.start()
-		if 'stop' in args:
+		elif 'stop' in args:
 			fw.stop()
-		if 'status' in args:
+		elif 'status' in args:
 			fw.status()
+		else:
+			usage()
 		
 if __name__ == '__main__':
     try:

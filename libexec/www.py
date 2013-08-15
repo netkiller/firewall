@@ -24,6 +24,10 @@
 
 from firewall import * 
 
+######################################## 
+# Web Application
+######################################## 
+
 www = Firewall()
 www.flush()
 www.policy(www.INPUT,www.ACCEPT)

@@ -3,7 +3,7 @@ firewall
 
 Install
 -------
-
+    cd packages
     python3 setup.py sdist
     python3 setup.py install
 
