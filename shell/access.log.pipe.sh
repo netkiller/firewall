@@ -5,6 +5,7 @@
 ########################################  
 ACCESSLOG=/www/logs/www.example.com/access.$(date +'%Y-%m-%d').log  
 TIMEPOINT='24/May/2012'
+KEYWORD=send.php
 BLACKLIST=/var/tmp/black.lst
 WHITELIST=/var/tmp/white.lst
 PIPE=/var/tmp/pipe
