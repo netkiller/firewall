@@ -79,15 +79,18 @@ class Firewall(Service, Address):
 		self.accesslist.append('iptables -X')
 		self.accesslist.append('iptables -F -t nat')
 		self.accesslist.append('iptables -F -t filter')
-		self.accesslist.append('iptables -t nat -P PREROUTING ACCEPT')
-		self.accesslist.append('iptables -t nat -P POSTROUTING ACCEPT')
 	def policy(self,chain = None, target = None):
 		if chain and target:
-			self.accesslist.append('iptables -P '+chain+' '+target)
+			if chain in ('PREROUTING', 'POSTROUTING'):
+				self.accesslist.append('iptables -t nat -P '+chain+' '+target)
+			else:
+				self.accesslist.append('iptables -P '+chain+' '+target)
 		else:
 			self.accesslist.append('iptables -P INPUT ACCEPT')
 			self.accesslist.append('iptables -P OUTPUT ACCEPT')
 			self.accesslist.append('iptables -P FORWARD ACCEPT')
+			self.accesslist.append('iptables -t nat -P PREROUTING ACCEPT')
+			self.accesslist.append('iptables -t nat -P POSTROUTING ACCEPT')
 		pass
 	def chain(self,tmp):
 		if tmp in ('INPUT', 'OUTPUT', 'FORWARD'):
