@@ -28,37 +28,38 @@ from firewall import *
 # Web Application
 ######################################## 
 
-www = Firewall()
-www.flush()
-www.policy(www.INPUT,www.ACCEPT)
-www.policy(www.OUTPUT,www.ACCEPT)
-www.policy(www.FORWARD,www.ACCEPT)
-www.input().state(('RELATED','ESTABLISHED')).accept()
-www.input().protocol('icmp').accept()
-www.input().interface('-i','lo').accept()
-www.input().protocol('tcp').dport('22').state('NEW').accept()
-www.input().protocol('tcp').dport(('443','80')).state('NEW').accept()
-www.output().protocol('tcp').dport(('20','21')).reject()
+smtp = Firewall()
+smtp.flush()
+smtp.policy(smtp.INPUT,smtp.ACCEPT)
+smtp.policy(smtp.OUTPUT,smtp.ACCEPT)
+smtp.policy(smtp.FORWARD,smtp.ACCEPT)
+smtp.policy(smtp.POSTROUTING,smtp.ACCEPT)
+smtp.input().state(('RELATED','ESTABLISHED')).accept()
+smtp.input().protocol('icmp').accept()
+smtp.input().interface('-i','lo').accept()
+smtp.input().protocol('tcp').state('NEW').dport('22').accept()
+#smtp.input().protocol('tcp').dport(('443','80')).state('NEW').accept()
+smtp.input().protocol('tcp').dport(('25','110')).reject()
 
-#www.input().protocol('tcp').inbound('eth0').dport('80').recent('HTTP',2,20).drop()
-#www.input().protocol('tcp').inbound('eth0').dport('80').connlimit(30).drop()
-#www.input().protocol('tcp').inbound('eth0').dport('80').recent('HTTP').accept()
-# DDOS
-#www.input().proto('tcp').dport("80").string('XXDD0S').drop()
-www.input().reject('--reject-with icmp-host-prohibited')
-www.forward().reject('--reject-with icmp-host-prohibited')
+#smtp.input().protocol('tcp').inbound('eth0').dport('80').recent('HTTP',2,20).drop()
+#smtp.input().protocol('tcp').inbound('eth0').dport('80').connlimit(30).drop()
+#smtp.input().protocol('tcp').inbound('eth0').dport('80').recent('HTTP').accept()
+smtp.input().reject('--reject-with icmp-host-prohibited')
+smtp.forward().reject('--reject-with icmp-host-prohibited')
+for ip in range(10,100):
+	smtp.postrouting().outbound('enp2s0').protocol('tcp').state('NEW').statistic('5').snat('--to-source 192.168.0.'+str(ip))
 
 def start():
-	www.start()
+	smtp.start()
 def stop():
-	www.stop()
+	smtp.stop()
 def restart():
-	www.stop()
-	www.start()
+	smtp.stop()
+	smtp.start()
 def show():
-	www.show()
+	smtp.show()
 def status():
-	www.status()
+	smtp.status()
 def main():
 	show()
 	return( 0 )

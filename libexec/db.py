@@ -3,7 +3,7 @@
 #
 #  example.py
 #  
-#  Copyright 2013 neo <neo@neo-ThinkPad-SL>
+#  Copyright 2013 neo <netkiller@msn.com>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
