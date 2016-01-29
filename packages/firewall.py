@@ -157,7 +157,7 @@ class Firewall(Service, Address):
 		if type(tmp) == str:
 			self.match.append('-m state --state ' + tmp + ' -m tcp')
 		elif isinstance(tmp, tuple):
-			self.match.append('-m state --state ' + ','.join(tmp) + ' -m tcp')
+			self.match.append('-m state --state ' + ','.join(tmp))
 		else:
 			pass
 		return( self )

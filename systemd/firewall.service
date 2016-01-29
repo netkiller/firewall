@@ -31,5 +31,8 @@ ExecStop=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE stop
 
 ExecReload=/bin/kill -HUP $MAINPID
 
+StandardOutput=null
+StandardError=null
+
 [Install]
 WantedBy=multi-user.target
