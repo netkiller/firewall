@@ -16,7 +16,7 @@ Conflicts=iptables.service ip6tables.service ebtables.service
 #After=syslog.target
 
 [Service]
-Type=forking
+Type=simple
 
 User=root
 Group=root
@@ -24,15 +24,13 @@ Group=root
 EnvironmentFile=/etc/sysconfig/firewall
 
 #ExecStartPre="/usr/bin/systemctl stop firewalld"
-ExecStart=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE start
+#ExecStart=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE start
+ExecStart=/etc/init.d/firewall start
 #ExecStartPost="/usr/bin/systemctl disable firewalld"
 
-ExecStop=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE stop
-
-ExecReload=/bin/kill -HUP $MAINPID
-
-StandardOutput=null
-StandardError=null
+#ExecStop=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE stop
+ExecStop=/etc/init.d/firewall stop
+ExecReload=/etc/init.d/firewall restart
 
 [Install]
 WantedBy=multi-user.target
