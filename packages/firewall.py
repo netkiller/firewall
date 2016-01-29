@@ -113,7 +113,11 @@ class Firewall(Service, Address):
 	def trust(self):
 		return self.chain('OUTPUT')
 	def untrust(self):
-		return self.chain('INPUT')		
+		return self.chain('INPUT')	
+	def prerouting(self):
+		return self.chain('PREROUTING')
+	def postrouting(self):
+		return self.chain('POSTROUTING')		
 	def interface(self,inter, name):
 		if inter and name:
 			self.nic.append(inter + ' ' + name)
@@ -148,11 +152,14 @@ class Firewall(Service, Address):
 		return( self )
 	def state(self, tmp):
 		if type(tmp) == str:
-			self.match.append('-m state --state ' + tmp)
+			self.match.append('-m state --state ' + tmp + ' -m tcp')
 		elif isinstance(tmp, tuple):
-			self.match.append('-m state --state ' + ','.join(tmp))
+			self.match.append('-m state --state ' + ','.join(tmp) + ' -m tcp')
 		else:
 			pass
+		return( self )
+	def statistic(self, tmp):
+		self.match.append('-m statistic --mode nth --every ' + tmp + ' --packet 0')
 		return( self )
 	def string(self, tmp):
 		if tmp:
@@ -227,6 +234,12 @@ class Firewall(Service, Address):
 	
 	def drop(self,desc = None):
 		self.target('DROP', desc)
+		
+	def dnat(self,desc = None):
+		self.target('DNAT', desc)
+		
+	def snat(self,desc = None):
+		self.target('SNAT', desc)
 
 	def masquerade(self):
 		self.target('MASQUERADE')
