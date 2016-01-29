@@ -1,0 +1,27 @@
+####################################################
+# Homepage: http://www.netkiller.cn
+# Author: netkiller<netkiller@msn.com>
+# Script: https://github.com/oscm/shell
+# Date: 2015-11-03
+####################################################
+
+[Unit]
+Description=Netkiller Firwall
+After=network.target
+After=syslog.target
+
+[Service]
+Type=forking
+
+User=root
+Group=root
+
+EnvironmentFile=/etc/sysconfig/firewall
+ExecStartPre="systemctl stop firewalld"
+ExecStart=/srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} start
+ExecStartPost="systemctl disable firewalld"
+
+ExecStop=/srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} stop
+
+[Install]
+WantedBy=multi-user.target

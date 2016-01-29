@@ -5,7 +5,7 @@ from optparse import OptionParser
 import os,sys; 
 
 
-parser = OptionParser(usage = "usage: %prog [options] start|stop|restart")
+parser = OptionParser(usage = "usage: %prog [options] start|stop|restart|status")
 
 def usage():
 	parser.print_help()

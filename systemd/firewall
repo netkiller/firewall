@@ -1,0 +1,9 @@
+##############################################
+NAME=firewall
+BASEDIR='/srv/firewall'
+PROG=$BASEDIR/sbin/$NAME
+LOGFILE=/var/tmp/$NAME.log
+PIDFILE=/var/tmp/$NAME.pid
+##############################################
+LIBEXEC=$BASEDIR/libexec
+RULE=www
