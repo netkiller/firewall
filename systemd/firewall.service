@@ -6,17 +6,17 @@
 ####################################################
 
 [Unit]
-Description=Netkiller Firwall
-Before=network.target
+Description=Netkiller Firewall
+After=network.target
+After=syslog.target
 Before=libvirtd.service
 Before=NetworkManager.service
 Conflicts=iptables.service ip6tables.service ebtables.service
 
-#After=network.target
-#After=syslog.target
-
 [Service]
-Type=simple
+#Type=simple
+Type=oneshot
+RemainAfterExit=yes
 
 User=root
 Group=root
@@ -24,13 +24,10 @@ Group=root
 EnvironmentFile=/etc/sysconfig/firewall
 
 #ExecStartPre="/usr/bin/systemctl stop firewalld"
-#ExecStart=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE start
-ExecStart=/etc/init.d/firewall start
+ExecStart=/srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} start
 #ExecStartPost="/usr/bin/systemctl disable firewalld"
 
-#ExecStop=/srv/firewall/sbin/firewall --libexec=$LIBEXEC --rule=$RULE stop
-ExecStop=/etc/init.d/firewall stop
-ExecReload=/etc/init.d/firewall restart
+ExecStop=/srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} stop
 
 [Install]
 WantedBy=multi-user.target
