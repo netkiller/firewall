@@ -10,5 +10,8 @@ keywords=( "bash" "cmd" "struts" "ognl" "os.name" "win" "opensymphony" "redirect
 for keyword in "${keywords[@]}"
 do
 	echo "Deny $keyword OK"
+	# Web http
 	iptables -I INPUT -p tcp --dport 80 -m string --algo bm --string $keyword -j DROP
+	# Nginx HTTP2 -> HTTP1.1 -> Tomcat 
+	# iptables -I INPUT -p tcp -m multiport --dports 80,8080 -m string --algo bm --string $keyword -j DROP
 done
