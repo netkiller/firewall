@@ -1,5 +1,4 @@
-#!/bin/bash
-#!/bin/bash           
+#!/bin/bash        
 ########################################  
 # Homepage: http://netkiller.github.io  
 # Author: neo <netkiller@msn.com>  
