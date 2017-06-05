@@ -17,10 +17,8 @@ Conflicts=iptables.service ip6tables.service ebtables.service
 #Type=simple
 Type=oneshot
 RemainAfterExit=yes
-
 User=root
 Group=root
-
 EnvironmentFile=/etc/sysconfig/firewall
 
 #ExecStartPre="/usr/bin/systemctl stop firewalld"
