@@ -141,9 +141,11 @@ class Firewall(Service, Address):
 		return( self )
 	def proto(self,tmp):
 		return self.protocol(tmp)
-	def source(self, src):
-		if src :
+	def source(self, src):	
+		if type(src) == str:
 			self.src = "-s " + src
+		elif isinstance(src, tuple):
+			self.src = "-s " + ','.join(src)
 		else:
 			self.src = ''
 		return( self )
