@@ -103,12 +103,12 @@ class Firewall(Service, Address):
 			self.A = None
 			self.err = True
 		return( self )
-	def input(self):
-		return self.chain('INPUT')
-	def output(self):
-		return self.chain('OUTPUT')
-	def forward(self):
-		return self.chain('FORWARD')	
+	def input(self, comment = None):
+		return self.chain(self.INPUT)
+	def output(self, comment = None):
+		return self.chain(self.OUTPUT)
+	def forward(self, comment = None):
+		return self.chain(self.FORWARD)
 	def inside(self):
 		return self.chain('OUTPUT')
 	def outside(self):
@@ -255,6 +255,7 @@ class Firewall(Service, Address):
 		
 	def show(self):
 		print('\n'.join(self.accesslist))
+    
 	def run(self):
 		for line in self.accesslist:
 			os.system(line)
