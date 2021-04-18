@@ -10,7 +10,7 @@ install -D -m 0700 -o root systemd/firewall /etc/sysconfig/
 systemctl enable firewall
 systemctl start firewall
 
-cd packages/
+cd firewall/
 python3 setup.py sdist
 python3 setup.py install
 cd -
