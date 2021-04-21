@@ -1,24 +1,24 @@
 import setuptools
-# from firewall import __version__, __author__
+from netkiller import __version__, name, __author__
 
 with open("README.md", "r") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name="netkiller-firewall",
-  version="0.0.1",
-  author="Neo Chen",
+  name=name,
+  version=__version__,
+  author=__author__,
   author_email="netkiller@msn.com",
-  description="Python firewall(iptables)",
+  description="Netkiller Python firewall",
   long_description=long_description,
   long_description_content_type="text/markdown",
   url="https://github.com/netkiller/firewall",
-  license='BSD',
+  license='MIT',
   # py_modules = ['firewall'],
-  # packages=setuptools.find_packages(),
-  packages=[''],
+  packages=setuptools.find_packages(),
+  # packages=[''],
   # packages=setuptools.find_packages('packages'),
-  # package_dir = {'':'packages'},
+  # package_dir = {'':'package'},
   classifiers=[
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",

@@ -4,7 +4,7 @@ firewall
 Install
 -------
 	# cd /usr/local/src/
-    # yum install -y git python39
+	# yum install -y git python39
 	# git clone https://github.com/netkiller/firewall.git
 	# cd firewall
 	# bash install.sh

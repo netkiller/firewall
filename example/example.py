@@ -22,7 +22,7 @@
 #  
 #  
 
-from firewall import * 
+from netkiller.firewall import * 
 
 def main():
 	########################################
