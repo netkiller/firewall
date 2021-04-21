@@ -22,10 +22,10 @@ Group=root
 EnvironmentFile=/etc/sysconfig/firewall
 
 #ExecStartPre="/usr/bin/systemctl stop firewalld"
-ExecStart=/srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} start
+ExecStart=/usr/bin/python3 srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} start
 #ExecStartPost="/usr/bin/systemctl disable firewalld"
 
-ExecStop=/srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} stop
+ExecStop=/usr/bin/python3 /srv/firewall/sbin/firewall --libexec=${LIBEXEC} --rule=${RULE} stop
 
 [Install]
 WantedBy=multi-user.target
